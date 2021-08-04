@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef } from 'react'
 import Quill from 'quill'
 import 'quill/dist/quill.snow.css'
+import {io} from 'socket.io-client'
 
 const TOOLBAR_OPTIONS = [
     [{header: [1, 2,3,4,5,6, false]}],
@@ -15,7 +16,13 @@ const TOOLBAR_OPTIONS = [
 
 
 const TextEditor = () => {
-
+    useEffect(() => {
+        const socket = io("http://localhost:3001");
+        
+        return(()=>{
+            socket.disconnect()
+        })
+    })
 
     const wrapperRef = useCallback((wrapper) => {
         if(wrapper === null){return}
