@@ -24,7 +24,7 @@ const TextEditor = () => {
     const [socket,setSocket] = useState()
     const [quill,setQuill] = useState()
 
-
+    // Connecting socket
     useEffect(() => {
         const s = io("http://localhost:3001");
         setSocket(s);
@@ -33,6 +33,7 @@ const TextEditor = () => {
         })
     },[])
 
+    // Text-change handler
     useEffect(() => {
         if(socket == null || quill == null) {return}
         const handler = (delta, oldDelta, source) => {
@@ -46,6 +47,7 @@ const TextEditor = () => {
         }
     }, [socket, quill])
 
+    // Saving changes
     useEffect(() => {
         if(socket == null || quill == null) {return}
 
@@ -57,6 +59,7 @@ const TextEditor = () => {
         }
     }, [socket, quill])
 
+    // Load document
     useEffect(() => {
         if(socket == null || quill == null) return
 
@@ -66,11 +69,9 @@ const TextEditor = () => {
         })
 
         socket.emit('get-document', documentId)
-        return () => {
-            
-        }
     }, [socket, quill, documentId])
 
+    // Update other docs on same link
     useEffect(() => {
         if(socket == null || quill == null) {return}
         const handler = (delta, oldDelta, source) => {
@@ -78,7 +79,7 @@ const TextEditor = () => {
         }
         socket.on("recieve-changes", handler)
         return () => {
-            socket.off('revieve-changes', handler)
+            socket.off('recieve-changes', handler)
         }
     }, [socket, quill])
 
