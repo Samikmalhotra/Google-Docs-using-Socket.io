@@ -41,5 +41,7 @@ async function findOrCreateDocument(id){
 
     const document = await Document.findById(id)
     if(document) return document;
-    return await document.create({_id: id, data: defaultValue})
+    const newDoc = new Document({_id: id, data: defaultValue})
+    await newDoc.save();
+    return newDoc;
 }

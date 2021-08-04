@@ -15,6 +15,7 @@ const TOOLBAR_OPTIONS = [
     ["clean"]
 ]
 
+const SAVE_INTERVAL_MS = 2000
 
 const TextEditor = () => {
 
@@ -46,9 +47,13 @@ const TextEditor = () => {
     }, [socket, quill])
 
     useEffect(() => {
-        
+        if(socket == null || quill == null) {return}
+
+        const interval = setInterval(() => {
+            socket.emit("save-document", quill.getContents())
+        }, SAVE_INTERVAL_MS)
         return () => {
-            
+            clearInterval(interval)
         }
     }, [socket, quill])
 
