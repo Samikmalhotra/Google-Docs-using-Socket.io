@@ -1,10 +1,12 @@
-const io = require('socket.io')(3001, {
-    cors:{
-        origin:'*',
-        methods: [ 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT', 'DELETE' ]
-    }
-});
+const io = require("socket.io")(3001, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+    },
+  })
 
 io.on("connection", socket => {
-    console.log("A user connected");
+    socket.on('send-changes', delta => {
+        socket.broadcast.emit("recieve-changes",delta)
+    })
 })
